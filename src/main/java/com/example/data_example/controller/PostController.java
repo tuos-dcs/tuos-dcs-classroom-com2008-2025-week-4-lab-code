@@ -52,7 +52,7 @@ public class PostController {
     public ResponseEntity<PostDTO> updateUser(Authentication authentication,
                                               @PathVariable int id,
                                               @RequestBody PostDTO updatedPost) {
-        return ResponseEntity.ok(postService.updatePost(id, updatedPost.toEntity()).toDto());
+        return ResponseEntity.ok(postService.updatePost(id, updatedPost.toEntity(), authentication).toDto());
     }
 
     @GetMapping("/byusername")

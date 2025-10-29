@@ -2,10 +2,8 @@ package com.example.data_example.controller;
 
 import com.example.data_example.domain.Post;
 import com.example.data_example.dto.PostDTO;
-import com.example.data_example.dto.UserDTO;
 import com.example.data_example.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -34,6 +32,11 @@ public class PostController {
                 .stream()
                 .map(Post::toDto)
                 .toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDTO> getPost(@PathVariable int id) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getPost(id).toDto());
     }
 
     @PostMapping({"", "/"})

@@ -1,7 +1,5 @@
 package com.example.data_example.dto;
 
-import com.example.data_example.domain.User;
-
 public class UserDTO {
 
     private String username;

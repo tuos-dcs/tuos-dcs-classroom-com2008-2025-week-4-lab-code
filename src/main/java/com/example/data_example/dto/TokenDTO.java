@@ -4,8 +4,11 @@ public class TokenDTO {
 
     private String token;
 
-    public TokenDTO(String token) {
+    private UserDTO user;
+
+    public TokenDTO(String token, UserDTO userDTO) {
         this.token = token;
+        this.user = userDTO;
     }
 
     public String getToken() {
@@ -14,5 +17,13 @@ public class TokenDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public UserDTO getUser() {
+        return user;
+    }
+
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }

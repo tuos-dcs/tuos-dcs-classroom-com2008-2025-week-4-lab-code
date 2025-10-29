@@ -7,6 +7,8 @@ import com.example.data_example.dto.UserSignupDTO;
 import com.example.data_example.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -40,9 +42,16 @@ public class UserService {
                 passwordEncoder.encode(userSignupDTO.getPassword()),
                 ROLE_USER
         );
-        userRepository.save(newUser);
+        User savedUser = userRepository.save(newUser);
         SecurityUser securityUser = (SecurityUser) detailsService.loadUserByUsername(newUser.getUsername());
-        return tokenService.generateToken(securityUser.getAuthorities(), newUser.getUsername());
+        return new TokenDTO(tokenService.generateToken(securityUser.getAuthorities(), newUser.getUsername()), savedUser.toDto());
+    }
+
+    public TokenDTO loginUser(Authentication authentication) {
+        String username = authentication.getName();
+        User authedUser = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+        return new TokenDTO(tokenService.generateToken(authentication.getAuthorities(), username), authedUser.toDto());
     }
 
     public List<User> getUsers() {

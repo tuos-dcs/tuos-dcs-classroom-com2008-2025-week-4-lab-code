@@ -21,7 +21,7 @@ public class TokenService {
         this.jwtEncoder = jwtEncoder;
     }
 
-    public TokenDTO generateToken(Collection<? extends GrantedAuthority> authorities, String username) {
+    public String generateToken(Collection<? extends GrantedAuthority> authorities, String username) {
         Instant now = Instant.now();
         String scope = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
@@ -33,6 +33,6 @@ public class TokenService {
                 .subject(username)
                 .claim("scope", scope)
                 .build();
-        return new TokenDTO(this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue());
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 }

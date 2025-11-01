@@ -3,11 +3,11 @@ package com.example.data_example.dto;
 public class ApiErrorDTO {
 
     private int status;
-    private String error;
+    private String message;
 
     public ApiErrorDTO(int status, String error) {
         this.status = status;
-        this.error = error;
+        this.message = error;
     }
 
     public int getStatus() {
@@ -18,11 +18,11 @@ public class ApiErrorDTO {
         this.status = status;
     }
 
-    public String getError() {
-        return error;
+    public String getMessage() {
+        return message;
     }
 
-    public void setError(String error) {
-        this.error = error;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

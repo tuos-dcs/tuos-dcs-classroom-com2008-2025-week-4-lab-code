@@ -4,6 +4,7 @@ import com.example.data_example.dto.TokenDTO;
 import com.example.data_example.dto.UserSignupDTO;
 import com.example.data_example.service.TokenService;
 import com.example.data_example.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -29,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<TokenDTO> signup(@RequestBody UserSignupDTO userSignupDTO) {
+    public ResponseEntity<TokenDTO> signup(@RequestBody @Valid UserSignupDTO userSignupDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userService.signupNewUser(userSignupDTO));

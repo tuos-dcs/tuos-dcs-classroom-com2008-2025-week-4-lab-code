@@ -4,6 +4,7 @@ import com.example.data_example.domain.SecurityUser;
 import com.example.data_example.domain.User;
 import com.example.data_example.dto.TokenDTO;
 import com.example.data_example.dto.UserSignupDTO;
+import com.example.data_example.exceptions.UsernameExistsException;
 import com.example.data_example.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -37,12 +38,16 @@ public class UserService {
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     public TokenDTO signupNewUser(UserSignupDTO userSignupDTO) {
+        if (userRepository.existsUserByUsername(userSignupDTO.getUsername())) {
+            throw new UsernameExistsException("Username already exists, please try to be original");
+        }
         User newUser = new User(
                 userSignupDTO.getUsername(),
                 passwordEncoder.encode(userSignupDTO.getPassword()),
                 ROLE_USER
         );
-        User savedUser = userRepository.save(newUser);
+        User savedUser;
+        savedUser = userRepository.save(newUser);
         SecurityUser securityUser = (SecurityUser) detailsService.loadUserByUsername(newUser.getUsername());
         return new TokenDTO(tokenService.generateToken(securityUser.getAuthorities(), newUser.getUsername()), savedUser.toDto());
     }

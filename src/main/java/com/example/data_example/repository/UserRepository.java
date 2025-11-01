@@ -14,5 +14,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     List<User> findUsersWithMoreThanXFriends(@Param("x") int x);
     Optional<User> findByUsername(String username);
     List<User> findByFriendsIsEmpty();
+    boolean existsUserByUsername(String username);
 
 }
